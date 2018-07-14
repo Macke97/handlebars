@@ -1,0 +1,7 @@
+.product-card {
+  min-height: 500px;
+}
+.image img {
+  width: 200px;
+  height: auto;
+}

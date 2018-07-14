@@ -1,0 +1,26 @@
+<div class="row">
+  {{#if noProducts}}
+    <h1>Inget resultat</h1>
+  {{/if}}
+  {{#each products}}
+    <div class="col-12 col-md-6 border mb-2 mb-md-0">
+      <div class="row product-row">
+        <div class="col-4">
+          <div class="image">
+            <img src="{{this.imagePath}}" alt="Image">
+          </div>
+        </div>
+        <div class="col-6 product-info">
+          <h4>{{this.title}}</h4>
+          <div>
+           {{this.description}}
+          </div>
+        </div>
+      </div>
+      <div class="d-flex align-items-center justify-content-end">
+        <b class="mr-2">${{this.price}}</b>
+        <button type="button" class="btn btn-success">Köp</button>
+      </div>
+    </div>
+  {{/each}}
+</div>
