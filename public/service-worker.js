@@ -37,7 +37,7 @@ self.addEventListener('fetch', e => {
         const resClone = response.clone();
 
         // Open cache
-        cache.open(cacheName).then(cache => {
+        caches.open(cacheName).then(cache => {
           // Add the response to our cache
           cache.put(e.request, resClone);
         });
