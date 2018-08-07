@@ -32,12 +32,17 @@ self.addEventListener('fetch', e => {
         // Clone the respone
         const resClone = response.clone();
 
-        // Open cache
-        caches.open(cacheName).then(cache => {
-          // Add the response to our cache
-          cache.put(e.request.url, resClone);
-        });
-        return response;
+        if (e.request.url.indexOf('chrome-extension') === -1) {
+          // Open cache
+          caches.open(cacheName).then(cache => {
+            // Add the response to our cache
+            cache.put(e.request, resClone);
+          });
+          return response;
+        } else {
+          console.log('Not caching : ', e.request.url);
+          return response;
+        }
       })
       .catch(err => caches.match(e.request).then(res => res)) // If error/offline, respond with cache
   );
