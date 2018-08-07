@@ -1,13 +1,10 @@
 const cacheName = 'v1';
 
-
-
-self.addEventListener('install', (e) => {
+self.addEventListener('install', e => {
   console.log('Service Worker Installed');
 });
 
-
-self.addEventListener('activate', (e) => {
+self.addEventListener('activate', e => {
   console.log('Service Worker Activated');
 
   // Remove unwanted caches
@@ -16,19 +13,18 @@ self.addEventListener('activate', (e) => {
       // Loop through all the promises and check the cache names
       return Promise.all(
         cacheNames.map(cache => {
-          if(cache !== cacheName) {
+          if (cache !== cacheName) {
             console.log('Service Worker: Removing old cache');
             return caches.delete(cache);
           }
         })
-      )
+      );
     })
   );
 });
 
 self.addEventListener('fetch', e => {
   console.log('Service Worker Fetching');
-  
 
   e.respondWith(
     fetch(e.request) // Fetch our request
@@ -39,7 +35,7 @@ self.addEventListener('fetch', e => {
         // Open cache
         caches.open(cacheName).then(cache => {
           // Add the response to our cache
-          cache.put(e.request, resClone);
+          cache.put(e.request.url, resClone);
         });
         return response;
       })
