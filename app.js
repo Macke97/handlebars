@@ -27,6 +27,8 @@ app.set('port', process.env.PORT || 3000);
 app.engine('.hbs', exphbs({defaultLayout: 'layout', extname: '.hbs', layoutsDir: __dirname + '/views/layouts',partialsDir: __dirname + '/views/partials' }));
 app.set('view engine', '.hbs');
 
+app.disable('x-powered-by');
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
