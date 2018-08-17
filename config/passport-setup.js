@@ -14,12 +14,12 @@ passport.deserializeUser((id, done) => {
   });
 });
 
-
+const googleRedirectURL = process.env.NODE_ENV === 'production' ? 'https://handlebars-testing.herokuapp.com/auth/google/redirect' : '/auth/google/redirect';
 passport.use(new GoogleStrategy({
   // Options for the google strategy
   clientID: keys.google.clientID,
   clientSecret: keys.google.clientSecret,
-  callbackURL: '/auth/google/redirect'
+  callbackURL: googleRedirectURL
 }, (accessToken, refreshToken, profile, done) => {
   // Passport callback, what to do when on redirect URI
   
