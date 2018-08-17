@@ -12,7 +12,7 @@
       <li class="nav-item">
         <a class="nav-link {{#if active.products}}active{{/if}}" href="/products">Products</a>
       </li>
-      <li class="nav-item dropdown">
+      {{!-- <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Dropdown
         </a>
@@ -22,10 +22,20 @@
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-      </li>
+      </li> --}}
+      {{#unless user}}
+        <li class="nav-item">
+          <a class="nav-link {{#if active.login}}active{{/if}}" href="/login">Login</a>
+        </li>
+      {{/unless}}
+      {{#if user}}
+        <li class="nav-item">
+          <a class="nav-link" href="/profile">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/auth/logout">Logout</a>
+        </li>
+      {{/if}}
     </ul>
     <form class="form-inline my-2 my-lg-0" action="/search?q=q" method="GET">
       <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search" aria-label="Search">

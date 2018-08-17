@@ -1,0 +1,13 @@
+@import "./variables";
+@import "./header";
+@import "./product";
+@import "./footer";
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  position: relative;
+}

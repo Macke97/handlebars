@@ -1,16 +1,20 @@
+.active {
+  border-bottom: 2px solid green; }
+
 .product-card {
-  min-height: 500px;
-}
+  min-height: 500px; }
+
 .image img {
   height: 20vh;
-  width: 30vw;
-}
-@media only screen and (min-width: 1025px), only screen and (min-width: 480px) and (max-width: 768px), only screen and (min-width: 769px) and (max-width: 1024px) {
-  .image img {
-    height: 17vh;
-    width: 13vw;
-  }
-}
-.active {
-  border-bottom: 2px solid green;
-}
+  width: 30vw; }
+
+footer {
+  bottom: 0;
+  position: absolute; }
+
+html, body {
+  margin: 0;
+  height: 100%; }
+
+body {
+  position: relative; }

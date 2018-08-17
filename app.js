@@ -3,6 +3,10 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const exphbs = require('express-handlebars');
+const passportSetup = require('./config/passport-setup');
+const cookieSession = require('cookie-session');
+const keys = require('./config/keys');
+const passport = require('passport');
 
 // Using Environment variables
 require('dotenv').config();
@@ -19,7 +23,7 @@ mongoose.connect(
 );
 
 // Import routes
-const authRouter = require('./routes/api/auth');
+const authRouter = require('./routes/auth');
 const indexRouter = require('./routes/index');
 
 const app = express();
@@ -34,18 +38,50 @@ app.engine(
     defaultLayout: 'layout',
     extname: '.hbs',
     layoutsDir: __dirname + '/views/layouts',
-    partialsDir: __dirname + '/views/partials'
+    partialsDir: __dirname + '/views/partials',
+    helpers: {
+      ifShowCookieInfo: function() {
+        return app.locals.cookieInfo;
+      }
+    }
   })
 );
 app.set('view engine', '.hbs');
 
 app.disable('x-powered-by');
-
-app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Session and Passport
+app.use(cookieParser());
+app.use(cookieSession({
+  maxAge: 1000 * 60 * 60 * 24, // 1 day
+  keys: keys.session.keys
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use((req, res, next) => {
+  const cookie = req.cookies.cookieInfo;
+  if(!cookie) {
+    res.cookie('cookieInfo', true, {
+      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true
+    });
+
+    console.log('Created cookie');
+  } else {
+    console.log('Did not create cookie, user is not new');
+  }
+  next();
+});
+
+app.use((req, res, next) => {
+  app.locals.user = req.user;
+  next();
+});
+
+//app.use(logger('dev'));
 
 // Routes, including API calls
 app.use('/auth', authRouter);
