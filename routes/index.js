@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const checkAuth = (req, res, next) => {
-  if(!req.user) {
+  if(!req.isAuthenticated()) {
     return res.redirect('/login');
   }
   return next();

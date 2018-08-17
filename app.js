@@ -7,6 +7,8 @@ const passportSetup = require('./config/passport-setup');
 const cookieSession = require('cookie-session');
 const keys = require('./config/keys');
 const passport = require('passport');
+const https = require('https');
+const fs = require('fs');
 
 // Using Environment variables
 require('dotenv').config();
@@ -103,6 +105,17 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(app.get('port'), () =>
-  console.log(`Server is listening on port ${app.get('port')}`)
-);
+const certOptions = {
+  key: fs.readFileSync(path.resolve('config/cert/server.key')),
+  cert: fs.readFileSync(path.resolve('config/cert/server.crt'))
+};
+
+if(process.env.NODE_ENV !== 'development') {
+  app.listen(app.get('port'), () =>
+    console.log(`Server is listening on port ${app.get('port')}`)
+  );
+} else {
+  https.createServer(certOptions, app).listen(3000);
+  console.log('Server started HTTPS')
+}
+

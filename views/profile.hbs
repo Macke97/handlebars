@@ -1,2 +1,11 @@
-<h1>Welcome {{user.username}}</h1>
-<img src="{{user.thumbnail}}" alt="Thumbnail">
+{{#if user.facebookId}}
+  <h3>Logged in with Facebook, dude</h3>
+  <h1>Welcome {{user.username}}</h1>
+  <img src="{{user.thumbnail}}" alt="Thumbnail">
+  <p>Your Facebook registered email: <strong>{{user.email}}</strong></p>
+{{/if}}
+{{#if user.googleId}}
+  <h3>Logged in with Google, dude</h3>
+  <h1>Welcome {{user.username}}</h1>
+  <img src="{{user.thumbnail}}" alt="Thumbnail">
+{{/if}}
