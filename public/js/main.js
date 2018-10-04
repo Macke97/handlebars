@@ -1,12 +1,11 @@
 'use strict';
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function () {
-    navigator.serviceWorker.register('../service-worker.js').then(function (registration) {
-      return console.log('Service Worker Registered');
-    }).catch(function (err) {
-      return console.log('Service worker faild:', err);
-    });
-  });
-}
+// if('serviceWorker' in navigator) {
+//   window.addEventListener('load', () => {
+//     navigator.serviceWorker
+//       .register('../service-worker.js')
+//       .then(registration => console.log('Service Worker Registered'))
+//       .catch(err => console.log('Service worker faild:', err));
+//   });
+// }
 var hej = 'zuuuup';

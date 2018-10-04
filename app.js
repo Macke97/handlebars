@@ -9,6 +9,8 @@ const keys = require('./config/keys');
 const passport = require('passport');
 const https = require('https');
 const fs = require('fs');
+const helmet = require('helmet');
+const secure = require('express-force-https');
 
 // Using Environment variables
 require('dotenv').config();
@@ -50,22 +52,26 @@ app.engine(
 );
 app.set('view engine', '.hbs');
 
-app.disable('x-powered-by');
+process.env.NODE_ENV === 'production' && app.use(secure);
+
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Session and Passport
 app.use(cookieParser());
-app.use(cookieSession({
-  maxAge: 1000 * 60 * 60 * 24, // 1 day
-  keys: keys.session.keys
-}));
+app.use(
+  cookieSession({
+    maxAge: 1000 * 60 * 60 * 24, // 1 day
+    keys: keys.session.keys
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use((req, res, next) => {
   const cookie = req.cookies.cookieInfo;
-  if(!cookie) {
+  if (!cookie) {
     res.cookie('cookieInfo', true, {
       maxAge: 24 * 60 * 60 * 1000,
       httpOnly: true
@@ -110,12 +116,9 @@ const certOptions = {
   cert: fs.readFileSync(path.resolve('config/cert/server.crt'))
 };
 
-if(process.env.NODE_ENV !== 'development') {
-  app.listen(app.get('port'), () =>
-    console.log(`Server is listening on port ${app.get('port')}`)
-  );
+if (process.env.NODE_ENV !== 'development') {
+  app.listen(app.get('port'), () => console.log(`Server is listening on port ${app.get('port')}`));
 } else {
   https.createServer(certOptions, app).listen(3000);
-  console.log('Server started HTTPS')
+  console.log('Server started HTTPS');
 }
-
