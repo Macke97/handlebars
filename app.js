@@ -10,7 +10,7 @@ const passport = require('passport');
 const https = require('https');
 const fs = require('fs');
 const helmet = require('helmet');
-const secure = require('express-force-https');
+const enforce = require('express-sslify');
 
 // Using Environment variables
 require('dotenv').config();
@@ -52,8 +52,7 @@ app.engine(
 );
 app.set('view engine', '.hbs');
 
-app.use(secure);
-
+process.env.NODE_ENV === 'production' && app.use(enforce.HTTPS({ trustProtoHeader: true }));
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
