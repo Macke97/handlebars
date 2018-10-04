@@ -52,7 +52,16 @@ app.engine(
 );
 app.set('view engine', '.hbs');
 
-process.env.NODE_ENV === 'production' && app.use(secure);
+if (!req.secure && process.env.NODE_ENV === 'production') {
+  server.use(function(req, res, next) {
+    if (!req.secure) {
+      var secureUrl = 'https://' + req.headers['host'] + req.url;
+      res.writeHead(301, { Location: secureUrl });
+      res.end();
+    }
+    next();
+  });
+}
 
 app.use(helmet());
 app.use(express.json());
