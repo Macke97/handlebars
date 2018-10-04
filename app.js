@@ -128,6 +128,6 @@ const certOptions = {
 if (process.env.NODE_ENV !== 'development') {
   app.listen(app.get('port'), () => console.log(`Server is listening on port ${app.get('port')}`));
 } else {
-  https.createServer(certOptions, app).listen(3000);
+  https.createServer(certOptions, app).listen(process.env.PORT);
   console.log('Server started HTTPS');
 }
