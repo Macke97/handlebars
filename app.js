@@ -53,7 +53,7 @@ app.engine(
 app.set('view engine', '.hbs');
 
 if (!req.secure && process.env.NODE_ENV === 'production') {
-  server.use(function(req, res, next) {
+  server.use((req, res, next) => {
     if (!req.secure) {
       var secureUrl = 'https://' + req.headers['host'] + req.url;
       res.writeHead(301, { Location: secureUrl });
@@ -125,7 +125,7 @@ const certOptions = {
   cert: fs.readFileSync(path.resolve('config/cert/server.crt'))
 };
 
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.NODE_ENV === 'development') {
   app.listen(app.get('port'), () => console.log(`Server is listening on port ${app.get('port')}`));
 } else {
   https.createServer(certOptions, app).listen(process.env.PORT);
